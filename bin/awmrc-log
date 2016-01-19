@@ -1,0 +1,23 @@
+#!/bin/bash
+##########################
+# awmrc - logging module #
+# version: 1.2           #
+# date: 2016-01-12       #
+##########################
+
+
+[[ !$AWMRC_LOG_VERBOSITY || -z $AWMRC_LOG_PRIORITY ]] || AWMRC_LOG_PRIORITY=1
+[[ !$AWMRC_LOG_VERBOSITY || -z $AWMRC_LOG_VERBOSITY ]] || AWMRC_LOG_VERBOSITY=1
+
+log ()
+{
+	printf "$@"
+	[[ $AWMRC_LOG_ENABLED -eq 1 && -n $AWMRC_LOG_DIR ]] || return
+	[[ -n $AWMRC_LOG_FILE ]] || AWMRC_LOG_FILE="awmrc.log"
+	printf "$@" >> "$AWMRC_LOG_DIR/$AWMRC_LOG_FILE"
+}
+
+log_reset ()
+{
+	[[ -n $AWMRC_LOG_DIR && $AWMRC_LOG_FILE ]] && rm -f "$AWMRC_LOG_DIR/$AWMRC_LOG_FILE"
+}

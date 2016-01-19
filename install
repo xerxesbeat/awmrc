@@ -1,0 +1,65 @@
+#!/bin/bash
+######################
+# awmrc - installer  #
+# version: 1.2       #
+# date: 2016-01-12   #
+# author: xerxesbeat #
+######################
+
+if [[ $EUID -ne 0 ]]; then
+	printf "Installation requires root privledges. (ABORT)\n"
+	exit 1
+fi
+
+AWMRC_INSTALL_DIR=$( cd "$( dirname ${BASH_SOURCE[0]} )" && pwd )
+AWM_ETC="/etc/xdg/awesome"
+
+source "$AWMRC_INSTALL_DIR/awmrc.conf"
+source "$AWMRC_INSTALL_DIR/bin/awmrc-log"
+
+AWMRC_LOG_DIR="$AWMRC_INSTALL_DIR"
+AWMRC_LOG_FILE="install.log"
+
+abort ()
+{
+	log "[awmrc] Installation Aborted"
+	[[ -z $@ ]] && log "\n" || log ": \"$@\"\n"
+	printf $AWMRC_INSTALL_ABORT | while read file; do
+		rm $file
+		[[ $? -ne 0 ]] && ( log "\n\t------\n$AWMRC_INSTALL_ABORT\n\t------\nAdditional error(s) occurred when attempting to revert the installation.  Good luck!\n" && exit 2 )
+	done
+	exit 1
+}
+AWMRC_INSTALL_ABORT=
+
+copy ()
+{
+	[[ -n $1 && -n $2 ]] || log "Refusing to copy file: file unspecified\n"
+	log "\t\"$2\"\n"
+	AWMRC_INSTALL_ABORT=$( printf "$AWMRC_INSTALL_ABORT\"$2\"\n" )
+	cp "$1" "$2"
+	[[ $? -eq 0 ]] || abort "Failed to copy file: \"$2\" (from \"$1\")\n"
+	if [[ -n $3 ]]; then
+		chmod $3 "$2"
+		[[ $? -eq 0 ]] || abort "Failed to set file permissions: \"$2\" (to $3)\n"
+	fi
+	if [[ -n $4 ]]; then
+		chown $4 "$2"
+		[[ $? -eq 0 ]] || abort "Failed to transfer file ownership: \"$2\" (to $4)\n"
+	fi
+}
+
+log_reset
+log "awmrc v1.2 - Installation\n"
+log "date: $(date)\n\n"
+
+log "Installing System Files...\n"
+copy "$AWMRC_INSTALL_DIR/bin/awmrc" 		"$AWM_ETC/awmrc" 	755
+copy "$AWMRC_INSTALL_DIR/bin/awmrc-log" 	"$AWM_ETC/awmrc-log" 	755
+copy "$AWMRC_INSTALL_DIR/awmrc.conf" 		"$AWM_ETC/awmrc.conf" 	755
+
+log "Attaching to Awesome Window Manager...\n"
+[[ -n $( cat "$AWM_ETC/rc.lua" | grep awmrc ) ]] || printf "\nawful.util.spawn_with_shell( \"$AWM_ETC/awmrc\" )\n" >> "$AWM_ETC/rc.lua"
+
+log "\nInstallation Complete\n"
+log "Thank you for choosing AWMRC\n"
