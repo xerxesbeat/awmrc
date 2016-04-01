@@ -9,7 +9,7 @@ CONFIGURATION:
 awmrc can be configured from the "awmrc.conf" file provided.  (should be in the same directory as this README)
 
 {AWMRC_USER_DIR}
-serves as the base directory for any scripts inteded to run when awesome starts.
+serves as the base directory for any scripts intended to run when awesome starts.
 Directory contents format is as follows:
 
 	"$AWMRC_USER_DIR/awesomerc"
