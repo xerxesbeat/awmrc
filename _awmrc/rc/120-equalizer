@@ -1,0 +1,6 @@
+#!/bin/bash
+
+source include/pulseaudio
+
+pamod module-equalizer-sink
+pamod module-dbus-protocol

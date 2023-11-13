@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if test -z "$(ps -a|grep steam)"; then
+	steam &
+fi
+
+if test -z "$(ps -a|grep discord)"; then
+	discord &
+fi
+
+if test -z "$(ps -a|grep 'Idle Research\.x')"; then
+	steam steam://rungameid/1482860
+fi
