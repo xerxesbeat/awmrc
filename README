@@ -1,40 +1,16 @@
-awmrc v1.2 - README
--------------------
+awmrc v2.0.0 - README
+---------------------
 
-This collection of scripts provides a method to run user-dependent shell commands when Awesome Window Manager has initialized and is running.
+WHY:
+----
 
-CONFIGURATION:
---------------
+it took unreasonably long to do the first time
 
-awmrc can be configured from the "awmrc.conf" file provided.  (should be in the same directory as this README)
+INSTALL:
+--------
 
-{AWMRC_USER_DIR}
-serves as the base directory for any scripts intended to run when awesome starts.
-Directory contents format is as follows:
-
-	"$AWMRC_USER_DIR/awesomerc"
-	"$AWMRC_USER_DIR/awesomerc.d/"
-
-The "awesomerc" file and any executable files in "awesomerc.d/" will be executed with the user's $SHELL command upon start/restart of Awesome WM.
-
-{AWMRC_LOG_ENABLED}
-determines whether awmrc logs runtime output to a file
-
-{AWMRC_LOG_DIR}
-the directory where awmrc should store logs
-
-{AWMRC_LOG_VERBOSITY}
-the level of detail awmrc reports to logs (and stdout).  0 is none, 1 is default, and higher numbers may or may not produce meaningful results.
-
-INSTALLATION:
--------------
-
-Once awmrc has been configured appropriately, simply execute the "install" file provided.  (should be in the same directory as this README)
-The installer requires root privleges in order for installation to complete successfully.
-
-	sudo ./install
-
-Please note you will still have to either place an "awesomerc" file in the directory chosen for AWMRC_USER_DIR, or, create the "awesomerc.d/" directory and place at least one file inside in order for awmrc to have it's intended effect.  Any rc files must have execute permission for the user or they will not be run.
+just add awful.util.spawn_with_shell( "nohup wherever/bin/awmrc.sh &" );
+to the end of /etc/xdg/awesome/rc.lua
 
 CONTACT:
 --------
