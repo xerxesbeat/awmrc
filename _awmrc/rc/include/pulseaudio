@@ -1,0 +1,25 @@
+#!/bin/bash
+
+##
+#
+# 
+#
+## 
+
+PACMD="$(which pacmd)"
+PACTL="$(which pactl)"
+
+pamod()
+{
+	$PACTL load-module $@;
+}
+
+pavirt()
+{
+	pamod module-null-sink sink_name=$1 sink_properties=device.description="$1"
+}
+
+paloop()
+{
+	pamod module-loopback $@
+}

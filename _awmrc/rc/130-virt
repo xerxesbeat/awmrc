@@ -1,0 +1,29 @@
+#!/bin/bash
+
+source include/pulseaudio
+
+#mic echo-cancel module
+pavirt mic_echo-cancel
+pamod module-echo-cancel sink=mic_echo-cancel
+
+#discord
+pavirt discord_input_mic
+pavirt discord_input_both
+pavirt discord_input_pc
+pavirt discord_output
+paloop source=discord_output.monitor
+
+#chrome
+pavirt chrome_input
+pavirt chrome_output
+paloop source=chrome_output.monitor
+
+#obs
+pavirt obs_output
+paloop source=obs_monitor.monitor
+pavirt obs_monitor
+
+#spotify
+pavirt spotify_output
+paloop source=spotify_output.monitor
+

@@ -1,0 +1,30 @@
+#!/bin/bash
+
+VIEWSONIC="DisplayPort-0"
+DELL="DisplayPort-1"
+LG="DisplayPort-2"
+SAMSUNG="HDMI-A-0"
+
+MONITOR_TOP=$VIEWSONIC
+MONITOR_LEFT=$DELL
+MONITOR_RIGHT=$LG
+TV=$SAMSUNG
+
+FHD="--mode 1920x1080"
+_2K="--mode 2560x1440"
+_4K="--mode 3840x2160"
+
+DELL=$MONITOR_LEFT
+xrandr --output $DELL --refresh 165 --primary
+xrandr --output $SAMSUNG --refresh 60 --set Colorspace BT2020_RGB
+
+xrandr --output $MONITOR_TOP $FHD
+xrandr --output $DELL $_2K
+xrandr --output $LG $_4K
+xrandr --output $SAMSUNG $_4K
+
+sleep 5
+
+xrandr --output $MONITOR_RIGHT --right-of $MONITOR_LEFT
+xrandr --output $MONITOR_TOP --above $MONITOR_LEFT
+xrandr --output $TV --right-of $MONITOR_RIGHT

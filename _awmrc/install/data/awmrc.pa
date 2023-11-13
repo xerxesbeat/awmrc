@@ -1,0 +1,1 @@
+load-module module-null-sink sink_name=GAME sink_properties=device.description="GAME"

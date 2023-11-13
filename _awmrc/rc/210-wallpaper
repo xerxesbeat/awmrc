@@ -1,0 +1,3 @@
+#/bin/bash
+
+feh --bg-tile "/home/xerxesbeat/Pictures/wallpapers/wallpaper.png"
